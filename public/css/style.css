@@ -1,0 +1,24 @@
+body{
+display: flexbox;
+background-color: yellowgreen;
+}
+
+button{
+    background: transparent;
+    color: white;
+    width: 10%;
+    border-color: transparent;
+}
+
+header{
+    background-color: black;
+    width: 100%;
+    height: 100px;
+}
+
+#title{
+    
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+}

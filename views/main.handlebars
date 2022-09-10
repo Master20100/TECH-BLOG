@@ -1,0 +1,43 @@
+<div>
+    {{!-- {{> navbar}} --}}
+ 
+    {{{body}}}
+    </div>   
+<!-- Home
+Dashboard
+Login -->
+
+
+
+<script>
+  document.querySelector('#regButton').addEventListener('click',
+  async(e)=>{
+    e.preventDefault();
+    const username = document.querySelector('#regUsername').value;
+    const password = document.querySelector('#regPassword').value;
+    await fetch('register', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+}
+)
+
+
+ document.querySelector('#logButton').addEventListener('click',
+  async(e)=>{
+    e.preventDefault();
+    const username = document.querySelector('#logUsername').value;
+    const password = document.querySelector('#logPassword').value;
+    await fetch('login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+ 
+}
+)
+
+
+
+</script>
