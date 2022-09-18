@@ -1,6 +1,18 @@
 body{
-display: flexbox;
 background-color: yellowgreen;
+}
+
+#loginForm, #registerForm{
+    background-color: yellowgreen;
+    display: flexbox;
+    width: 98%;
+    margin: 0 auto; 
+}
+
+input{
+    display: block;
+    width: 98%;
+    height: 30px;
 }
 
 button{
@@ -11,9 +23,12 @@ button{
 }
 
 header{
+    display: flexbox;
+    flex-wrap: wrap;
     background-color: black;
     width: 100%;
-    height: 100px;
+    height: 70px;
+    color: wheat;
 }
 
 #title{
@@ -39,3 +54,18 @@ header{
     width: 100%;
     height: 50px;
 }
+
+section{
+display: flexbox;
+width: 80%;
+background-color: black;
+align-content: center;
+}
+
+#loginLabel,#registerLabel{
+    background-color: black;
+    color: wheat;
+}
+
+
+
