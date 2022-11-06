@@ -1,4 +1,5 @@
 const loginPageBtn = document.querySelector("#loginPageBtn");
+const registerPageBtn = document.querySelector("#registerPageBtn");
 
 loginPageBtn.addEventListener("click",async(e)=>{
   await fetch('login');
@@ -7,13 +8,13 @@ loginPageBtn.addEventListener("click",async(e)=>{
 );
 
 
-const register = document.querySelector("#registerPageBtn");
-register.addEventListener("click",async(e)=>{
+registerPageBtn.addEventListener("click",async(e)=>{
   await fetch('register');
   document.location.replace('/register');
 }
 );
 
+const register = document.querySelector("#registerBtn");
 register.addEventListener("click",async(e)=>{
   e.preventDefault();
   const regUsername = document.querySelector("#regUsername").value.trim();
