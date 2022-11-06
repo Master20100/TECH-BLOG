@@ -7,7 +7,12 @@ loginPageBtn.addEventListener("click",async(e)=>{
 );
 
 
-const register = document.querySelector("#regButton");
+const register = document.querySelector("#registerPageBtn");
+register.addEventListener("click",async(e)=>{
+  await fetch('register');
+  document.location.replace('/register');
+}
+);
 
 register.addEventListener("click",async(e)=>{
   e.preventDefault();
@@ -35,7 +40,8 @@ const loginButton = document.querySelector("#loginButton");
 loginButton.addEventListener('click',async(e)=>{
   const logUsername = document.querySelector("#logUsername").value.trim();
   const logPassword = document.querySelector("#logPassword").value.trim();
-  e.preventDefault();
+  // e.preventDefault();
+  console.log("logging");
   const response = await fetch('/login',{
     method: 'POST',
     // body: JSON.stringify({ logUsername.value, password }),

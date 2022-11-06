@@ -22,13 +22,15 @@ app.get('/', (req, res) => {
 // const routes = require('./controllers');
 
 const sequelize = require('./config/connection');
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(routes);
-
+app.post("*",(req,res)=>{
+  console.log("qqqq");
+})
 // Login
 app.post('/login', async (req, res) => {
   console.log("aaaa");
@@ -44,6 +46,9 @@ app.post('/login', async (req, res) => {
         .status(400)
         .json({ message: 'Incorrect email or password. Please try again!' });
       return;
+    }
+    else{
+      res.send("hello");
     }
 
     const validPassword = await dbUserData.checkPassword(req.body.password);
