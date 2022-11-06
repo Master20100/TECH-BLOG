@@ -28,16 +28,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(routes);
-app.post("*",(req,res)=>{
-  console.log("qqqq");
-})
+
 // Login
 app.post('/login', async (req, res) => {
-  console.log("aaaa");
   try {
     const dbUserData = await User.findOne({
       where: {
-        username: req.body.username,
+        username: req.body.logUsername,
       },
     });
 
@@ -74,32 +71,18 @@ app.post('/login', async (req, res) => {
 }
 });
 
-// app.post('/login',async (req,res)=>{
-//   console.log("login1");
-//   const user = await User.findOne({
-//     where: {
-//       username: req.body.username
-//     }
-//   })
-//   if(!user){
-//     console.log("user not found");
-//     res.status('500').send("user not found"); return;};
+// app.use("*",(req,res)=>{
+//   console.log("all routes "+ req.method);
+// })  
 
-//   //user.password
-//   //req.body.password
 
-// res.send(req.body);
-//   // console.log(req.body);
-//     // res.render("login", {layout : 'index'});
-// });
-  
-  
+
 app.post('/register',async(req,res)=>{
+   console.log(req.body);
     try {
     const dbUserData = await User.create({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
+      username: req.body.regUsername,
+      password: req.body.regPassword,
     });
     // Set up sessions with a 'loggedIn' variable set to `true`
     req.session.save(() => {
@@ -121,7 +104,9 @@ app.get('/login',(req,res)=>{
 
 
   app.get('/register',(req,res)=>{
-    console.log("register");
+    console.log("register2");
+    console.log(req.method);
+
     // console.log(req.body);
       res.render("register", {layout : 'index'});
   });
