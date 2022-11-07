@@ -13,7 +13,8 @@ User.init({
 // Model attributes are defined here
 username: {
 type: DataTypes.STRING,
-allowNull: false
+allowNull: false,
+unique: true,
 },
 password: {
 type: DataTypes.STRING,

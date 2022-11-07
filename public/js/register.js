@@ -4,7 +4,6 @@ register.addEventListener("click",async(e)=>{
   const regUsername = document.querySelector("#regUsername").value.trim();
   const regPassword = document.querySelector("#regPassword").value.trim();
   if(regUsername && regPassword){
-  alert(regUsername + regPassword);
   const response = await fetch('/register',
   {
     method: 'POST',
