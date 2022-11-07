@@ -1,10 +1,10 @@
-const register = document.querySelector("#registerPageBtn");
+const register = document.querySelector("#regButton");
 register.addEventListener("click",async(e)=>{
   e.preventDefault();
   const regUsername = document.querySelector("#regUsername").value.trim();
   const regPassword = document.querySelector("#regPassword").value.trim();
   if(regUsername && regPassword){
-  console.log(regUsername + regPassword);
+  alert(regUsername + regPassword);
   const response = await fetch('/register',
   {
     method: 'POST',
@@ -21,5 +21,3 @@ if (response.ok) {
   }
 }
 );
-
-<script src="/public/js/register.js"></script>
