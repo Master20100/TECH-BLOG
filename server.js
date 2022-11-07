@@ -12,7 +12,15 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 
 
-app.use(express.static('public'))
+app.use(express.static('public'));
+
+const sess = {
+  secret: 'Super secret secret',
+  resave: false,
+  saveUninitialized: false,
+};
+
+app.use(session(sess));
 
 app.get('/', (req, res) => {
   //Serves the body of the page aka "main.handlebars" to the container //aka "index.handlebars"
@@ -26,11 +34,14 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 // app.use(routes);
+
+// app.use("*",(req,res)=>{console.log("method is "+req.method)});
 
 // Login
 app.post('/login', async (req, res) => {
+  console.log("session stored");
   try {
     const dbUserData = await User.findOne({
       where: {
@@ -40,8 +51,8 @@ app.post('/login', async (req, res) => {
 
     if (!dbUserData) {
       res
-        .status(400)
-        .json({ message: 'Incorrect email or password. Please try again!' });
+      .status(400)
+      .json({ message: 'Incorrect email or password. Please try again!' });
       return;
     }
     else{
@@ -58,8 +69,13 @@ app.post('/login', async (req, res) => {
     }
 
   // Once the user successfully logs in, set up the sessions variable 'loggedIn'
+
+
+
+
   req.session.save(() => {
-    req.session.loggedIn = true;
+    req.session.user_id = dbUserData.id;
+    req.session.logged_In = true;
 
     res
       .status(200)
@@ -67,7 +83,7 @@ app.post('/login', async (req, res) => {
   });
 } catch (err) {
   console.log(err);
-  res.status(500).json(err);
+  res.status(400).json(err);
 }
 });
 
@@ -98,7 +114,7 @@ app.post('/register',async(req,res)=>{
 
 
 app.get('/login',(req,res)=>{
-    // console.log(req.body);
+  console.log("session stored2");
       res.render("login", {layout : 'index'});
   });
 
@@ -137,3 +153,6 @@ sequelize.sync({ force: false }).then(() => {
 //     res.status(500).json(err);
 //   }
 // });
+
+
+
