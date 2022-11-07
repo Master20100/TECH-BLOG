@@ -8,7 +8,8 @@ process.env.DB_PASSWORD,
 {
     host:'localhost',
     dialect:'mysql',
-    port: 3306
+    port: 3306,
+    logging: false
 }
 );
 

@@ -41,7 +41,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Login
 app.post('/login', async (req, res) => {
-  console.log("session stored");
   try {
     const dbUserData = await User.findOne({
       where: {
@@ -55,12 +54,9 @@ app.post('/login', async (req, res) => {
       .json({ message: 'Incorrect email or password. Please try again!' });
       return;
     }
-    else{
-      res.send("hello");
-    }
-
-    const validPassword = await dbUserData.checkPassword(req.body.password);
-
+    
+    console.log(req.body.logPassword);
+    const validPassword = await dbUserData.checkPassword(req.body.logPassword);
     if (!validPassword) {
       res
         .status(400)
@@ -71,15 +67,11 @@ app.post('/login', async (req, res) => {
   // Once the user successfully logs in, set up the sessions variable 'loggedIn'
 
 
-
-
   req.session.save(() => {
     req.session.user_id = dbUserData.id;
     req.session.logged_In = true;
 
-    res
-      .status(200)
-      .json({ user: dbUserData, message: 'You are now logged in!' });
+    res.json({ user: dbUserData, message: 'You are now logged in!' });
   });
 } catch (err) {
   console.log(err);
@@ -94,7 +86,6 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/register',async(req,res)=>{
-   console.log(req.body);
     try {
     const dbUserData = await User.create({
       username: req.body.regUsername,
@@ -114,16 +105,11 @@ app.post('/register',async(req,res)=>{
 
 
 app.get('/login',(req,res)=>{
-  console.log("session stored2");
       res.render("login", {layout : 'index'});
   });
 
 
   app.get('/register',(req,res)=>{
-    console.log("register2");
-    console.log(req.method);
-
-    // console.log(req.body);
       res.render("register", {layout : 'index'});
   });
 
