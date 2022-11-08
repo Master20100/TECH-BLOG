@@ -5,6 +5,11 @@ const { engine } = require ('express-handlebars');
 const session = require('express-session');
 const handlebars = require('express-handlebars');
 const {User,BlogTemplate} = require('./models/index');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const sequelize = require('./config/connection');
+const withAuth = require('../utils/auth');
+
+
 //here we set the engine that is called handlebars string to handlebars engine(const { engine } = require ('express-handlebars');)
 app.engine('handlebars', engine());
 //after that view engine tells express to use this value that is called handlebars string
@@ -16,9 +21,20 @@ app.use(express.static('public'));
 
 const sess = {
   secret: 'Super secret secret',
+  cookie: {
+    maxAge: 300000,
+    httpOnly: true,
+    secure: false,
+    sameSite: 'strict',
+  },
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  })
 };
+
+
 
 app.use(session(sess));
 
@@ -29,7 +45,6 @@ app.get('/', (req, res) => {
 
 // const routes = require('./controllers');
 
-const sequelize = require('./config/connection');
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
