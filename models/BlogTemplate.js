@@ -2,7 +2,6 @@ const sequelize = require("../config/connection");
 const { Model, DataTypes } = require("sequelize");
 
 class BlogTemplate extends Model {}
-console.log("---------3");
 BlogTemplate.init(
   {
     id: {

@@ -159,6 +159,31 @@ app.post("/projects", withAuth, async (req, res) => {
   }
 });
 
+app.delete('/profile/:id', async (req, res) => {
+  console.log("delete route---------------");
+  try {
+    console.log("--------" + req.params.id);
+    const blogContent = await BlogTemplate.destroy({
+      where: {
+        id: req.params.id,
+        user_id: req.session.user_id,
+      },
+    });
+console.log("blogContent is "+blogContent);
+    if (!BlogTemplate) {
+      res.status(404).json({ message: 'No project found with this id!' });
+      return;
+    }
+
+    res.status(200).json(blogContent);
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+});
+
+
+
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
 });

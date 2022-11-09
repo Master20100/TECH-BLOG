@@ -19,11 +19,43 @@ document.querySelector("#saveBtn").addEventListener("click", async (e) => {
     });
 
     if (response.ok) {
-      alert("Blog saved");
-    } else {
+       document.location.replace('/profile');
+} else {
       alert("Failed to create blog");
     }
   }
 });
 
+document.querySelector("#deleteBtn").addEventListener("click",async(e)=>{
+  if (e.target.hasAttribute('data-id')) {
+    const id = e.target.getAttribute('data-id');
+
+    const response = await fetch(`/profile/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      document.location.replace('/profile');
+    } else {
+      alert('Failed to delete blog');
+    }
+  }
+
+})
+
+//  const delButtonHandler = async (event) => {
+//    if (event.target.hasAttribute('data-id')) {
+//      const id = event.target.getAttribute('data-id');
+
+//      const response = await fetch(`/project/${id}`, {
+//        method: 'DELETE',
+//      });
+
+//      if (response.ok) {
+//        document.location.replace('/profile');
+//      } else {
+//        alert('Failed to delete blog');
+//      }
+//    }
+//  };
 
