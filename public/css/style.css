@@ -71,5 +71,8 @@ align-content: center;
     color: wheat;
 }
 
+#loginPageBtn, #logout,#registerPageBtn{
+    display: none;
+}
 
 

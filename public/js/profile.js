@@ -1,4 +1,7 @@
 const newPostBtn = document.querySelector("#newPostBtn");
+document.querySelector("#loginPageBtn").style.display = "none";
+document.querySelector("#registerPageBtn").style.display = "none";
+document.querySelector("#logout").style.display = "inline";
 newPostBtn.addEventListener("click", async () => {
   // dynamiccally generate
   document.getElementById("section").classList.remove("hidden");
@@ -25,7 +28,7 @@ document.querySelector("#saveBtn").addEventListener("click", async (e) => {
     }
   }
 });
-
+if(document.querySelector("#deleteBtn")){
 document.querySelector("#deleteBtn").addEventListener("click",async(e)=>{
   if (e.target.hasAttribute('data-id')) {
     const id = e.target.getAttribute('data-id');
@@ -42,5 +45,11 @@ document.querySelector("#deleteBtn").addEventListener("click",async(e)=>{
   }
 
 })
+}
+document.querySelector("#logout").addEventListener("click",async()=>{
+  console.log("aaaaa");
+const response = await fetch("/logout");
+alert("You have been logged out");
+document.location.replace("/");
 
-
+})
