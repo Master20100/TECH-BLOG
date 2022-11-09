@@ -7,7 +7,7 @@ const handlebars = require('express-handlebars');
 const {User,BlogTemplate} = require('./models/index');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sequelize = require('./config/connection');
-const withAuth = require('../utils/auth');
+const withAuth = require('./utils/auth');
 
 
 //here we set the engine that is called handlebars string to handlebars engine(const { engine } = require ('express-handlebars');)
@@ -84,7 +84,9 @@ app.post('/login', async (req, res) => {
 
   req.session.save(() => {
     req.session.user_id = dbUserData.id;
-    req.session.logged_In = true;
+    req.session.logged_in = true;
+    console.log("this is session user_id "+req.session.user_id );
+    console.log("this is session boolean "+req.session.logged_in );
 
     res.json({ user: dbUserData, message: 'You are now logged in!' });
   });
@@ -126,6 +128,42 @@ app.get('/login',(req,res)=>{
   app.get('/register',(req,res)=>{
       res.render("register", {layout : 'index'});
   });
+
+
+  app.get('/profile', withAuth, async (req, res) => {
+    try {
+      console.log("..............0");
+      const userData = await User.findByPk(req.session.user_id, {
+        attributes: { exclude: ['password'] },
+        //To be fixed
+        // include: [{ model: BlogTemplate }],
+      });
+      
+      console.log("..............1");
+      const user = userData.get({ plain: true });
+      console.log("..............2");
+      
+      console.log("..............3");
+      
+      // res.render('profile', {
+      //   ...user,
+      //   logged_in: true
+      // });
+
+      res.render('profile', {layout:'index'});
+
+      console.log("..............4");
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  });
+
+app.get('/createPost',(req,res)=>{
+  console.log("create");
+res.send("hello");
+
+})
 
 
 sequelize.sync({ force: false }).then(() => {

@@ -18,7 +18,7 @@ loginButton.addEventListener('click',async(e)=>{
 )
     if (response.ok) {
       alert('logged in.');
-      document.location.replace('/');
+      document.location.replace('/profile');
     } else {
       alert('Failed to log in.');
     }
