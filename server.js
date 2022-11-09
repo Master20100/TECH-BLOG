@@ -1,47 +1,43 @@
-const path = require('path');
-const express = require('express');
+const path = require("path");
+const express = require("express");
 const app = express();
-const { engine } = require ('express-handlebars');
-const session = require('express-session');
-const handlebars = require('express-handlebars');
-const {User,BlogTemplate} = require('./models/index');
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const sequelize = require('./config/connection');
-const withAuth = require('./utils/auth');
-
+const { engine } = require("express-handlebars");
+const session = require("express-session");
+const handlebars = require("express-handlebars");
+const { User, BlogTemplate } = require("./models/index");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const sequelize = require("./config/connection");
+const withAuth = require("./utils/auth");
 
 //here we set the engine that is called handlebars string to handlebars engine(const { engine } = require ('express-handlebars');)
-app.engine('handlebars', engine());
+app.engine("handlebars", engine());
 //after that view engine tells express to use this value that is called handlebars string
 //then express will look for it up to find it equal to engine.
-app.set('view engine', 'handlebars');
+app.set("view engine", "handlebars");
 
-
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 const sess = {
-  secret: 'Super secret secret',
+  secret: "Super secret secret",
   cookie: {
     maxAge: 300000,
     httpOnly: true,
     secure: false,
-    sameSite: 'strict',
+    sameSite: "strict",
   },
   resave: false,
   saveUninitialized: true,
   store: new SequelizeStore({
-    db: sequelize
-  })
+    db: sequelize,
+  }),
 };
-
-
 
 app.use(session(sess));
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   //Serves the body of the page aka "main.handlebars" to the container //aka "index.handlebars"
-  res.render('main', {layout : 'index'});
-  });
+  res.render("main", { layout: "index" });
+});
 
 // const routes = require('./controllers');
 
@@ -55,7 +51,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use("*",(req,res)=>{console.log("method is "+req.method)});
 
 // Login
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   try {
     const dbUserData = await User.findOne({
       where: {
@@ -65,45 +61,39 @@ app.post('/login', async (req, res) => {
 
     if (!dbUserData) {
       res
-      .status(400)
-      .json({ message: 'Incorrect email or password. Please try again!' });
+        .status(400)
+        .json({ message: "Incorrect email or password. Please try again!" });
       return;
     }
-    
-    console.log(req.body.logPassword);
+
     const validPassword = await dbUserData.checkPassword(req.body.logPassword);
     if (!validPassword) {
       res
         .status(400)
-        .json({ message: 'Incorrect email or password. Please try again!' });
+        .json({ message: "Incorrect email or password. Please try again!" });
       return;
     }
 
-  // Once the user successfully logs in, set up the sessions variable 'loggedIn'
+    // Once the user successfully logs in, set up the sessions variable 'loggedIn'
 
+    req.session.save(() => {
+      req.session.user_id = dbUserData.id;
+      req.session.logged_in = true;
 
-  req.session.save(() => {
-    req.session.user_id = dbUserData.id;
-    req.session.logged_in = true;
-    console.log("this is session user_id "+req.session.user_id );
-    console.log("this is session boolean "+req.session.logged_in );
-
-    res.json({ user: dbUserData, message: 'You are now logged in!' });
-  });
-} catch (err) {
-  console.log(err);
-  res.status(400).json(err);
-}
+      res.json({ user: dbUserData, message: "You are now logged in!" });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
 });
 
 // app.use("*",(req,res)=>{
 //   console.log("all routes "+ req.method);
-// })  
+// })
 
-
-
-app.post('/register',async(req,res)=>{
-    try {
+app.post("/register", async (req, res) => {
+  try {
     const dbUserData = await User.create({
       username: req.body.regUsername,
       password: req.body.regPassword,
@@ -115,56 +105,59 @@ app.post('/register',async(req,res)=>{
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json(err);  
-    }
-  })
+    res.status(500).json(err);
+  }
+});
 
+app.get("/login", (req, res) => {
+  res.render("login", { layout: "index" });
+});
 
-app.get('/login',(req,res)=>{
-      res.render("login", {layout : 'index'});
-  });
+app.get("/register", (req, res) => {
+  res.render("register", { layout: "index" });
+});
 
+app.get("/profile", withAuth, async (req, res) => {
+  try {
+    const userData = await User.findByPk(req.session.user_id, {
+      attributes: { exclude: ["password"] },
+      //To be fixed
+      include: [{ model: BlogTemplate }],
+    });
 
-  app.get('/register',(req,res)=>{
-      res.render("register", {layout : 'index'});
-  });
+    const user = userData.get({ plain: true });
+  
+    // res.render('profile', {
+    //   ...user,
+    //   logged_in: true
+    // });
 
+    console.log("user", user);
+    res.render("profile", { ...user, layout: "index" });
 
-  app.get('/profile', withAuth, async (req, res) => {
-    try {
-      console.log("..............0");
-      const userData = await User.findByPk(req.session.user_id, {
-        attributes: { exclude: ['password'] },
-        //To be fixed
-        // include: [{ model: BlogTemplate }],
-      });
-      
-      console.log("..............1");
-      const user = userData.get({ plain: true });
-      console.log("..............2");
-      
-      console.log("..............3");
-      
-      // res.render('profile', {
-      //   ...user,
-      //   logged_in: true
-      // });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
 
-      res.render('profile', {layout:'index'});
+app.get("/createPost", (req, res) => {
+  res.render("blogUnit", { layout: "index" });
+});
 
-      console.log("..............4");
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  });
+app.post("/projects", withAuth, async (req, res) => {
+  try {
+    const blogContent = await BlogTemplate.create({
+      ...req.body,
+      user_id: req.session.user_id,
+    });
 
-app.get('/createPost',(req,res)=>{
-  console.log("create");
-res.send("hello");
-
-})
-
+    res.json(blogContent);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+});
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));

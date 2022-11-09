@@ -1,4 +1,34 @@
 <p>Welcome to the projects</p>
 <button id="newPostBtn">+New Post </button>
 
+<section class="blog hidden" id="section">
+<title class="blogTitle">mina</title>
+<article class="blogContent">trying my best</article>
+<form>
+<input id ="blogTitle" type="input">
+<input id ="blogContent" type="input">
+<input id ="saveBtn" type="submit" name="Save">
+</form>
+
+</section>
+
+{{#if BlogTemplates.length}}
+  <div class="col-md-6 project-list">
+    <h3>Current Blog Templates:</h3>
+
+    {{#each BlogTemplates as |project|}}
+    <div class="row mb-2">
+      <div class="col-md-8">
+        <h4><a href="/project/{{project.id}}">{{project.title}}</a></h4>
+        <h4><a href="/project/{{project.id}}">{{project.content}}</a></h4>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-sm btn-danger" data-id="{{project.id}}">DELETE</button>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+
 <script src="/js/profile.js"></script>

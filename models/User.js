@@ -4,9 +4,9 @@ const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 class User extends Model {
-    checkPassword(loginPw) {
-        return bcrypt.compareSync(loginPw, this.password);
-      }
+  checkPassword(loginPw) {
+    return bcrypt.compareSync(loginPw, this.password);
+  }
 }
 
 User.init({
@@ -16,16 +16,16 @@ User.init({
     primaryKey: true,
     autoIncrement: true,
   },
-// Model attributes are defined here
-username: {
-type: DataTypes.STRING,
-allowNull: false,
-unique: true,
-},
-password: {
-type: DataTypes.STRING,
-allowNull : false
-}
+  // Model attributes are defined here
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull : false
+  }
 }, {
   hooks:{
     async beforeCreate(newUserData) {
@@ -33,9 +33,9 @@ allowNull : false
       return newUserData;
     }
   },
-// Other model options go here
-sequelize, // We need to pass the connection instance
-modelName: 'User' // We need to choose the model name
+  // Other model options go here
+  sequelize, // We need to pass the connection instance
+  modelName: 'User' // We need to choose the model name
 });
 
 module.exports = User;
