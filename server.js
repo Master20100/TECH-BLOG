@@ -39,16 +39,11 @@ app.get("/", (req, res) => {
   res.render("main", { layout: "index" });
 });
 
-// const routes = require('./controllers');
 
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.static(path.join(__dirname, 'public')));
-// app.use(routes);
-
-// app.use("*",(req,res)=>{console.log("method is "+req.method)});
 
 // Login
 app.post("/login", async (req, res) => {
@@ -88,9 +83,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// app.use("*",(req,res)=>{
-//   console.log("all routes "+ req.method);
-// })
+
 
 app.post("/register", async (req, res) => {
   try {
@@ -132,7 +125,6 @@ app.get("/profile", withAuth, async (req, res) => {
     //   logged_in: true
     // });
 
-    console.log("user", user);
     res.render("profile", { ...user, layout: "index" });
 
   } catch (err) {
@@ -160,16 +152,13 @@ app.post("/projects", withAuth, async (req, res) => {
 });
 
 app.delete('/profile/:id', async (req, res) => {
-  console.log("delete route---------------");
   try {
-    console.log("--------" + req.params.id);
     const blogContent = await BlogTemplate.destroy({
       where: {
         id: req.params.id,
         user_id: req.session.user_id,
       },
     });
-console.log("blogContent is "+blogContent);
     if (!BlogTemplate) {
       res.status(404).json({ message: 'No project found with this id!' });
       return;

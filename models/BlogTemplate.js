@@ -22,13 +22,7 @@ BlogTemplate.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    // user_id: {
-    //     type: DataTypes.INTEGER,
-    //     references: {
-    //       model: 'User',
-    //       key: 'id',
-    //     },
-    //   }
+   
   },
   {
     // Other model options go here

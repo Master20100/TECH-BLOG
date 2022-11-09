@@ -5,7 +5,6 @@ loginButton.addEventListener('click',async(e)=>{
   const logUsername = document.querySelector("#logUsername").value.trim();
   const logPassword = document.querySelector("#logPassword").value.trim();
   // e.preventDefault();
-  console.log("logging");
   const response = await fetch('/login',{
     method: 'POST',
     // body: JSON.stringify({ logUsername.value, password }),
