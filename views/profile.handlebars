@@ -13,17 +13,12 @@
 </section>
 
 {{#if BlogTemplates.length}}
-  <div class="col-md-6 project-list">
     <h3>Current Blog Templates:</h3>
-
     {{#each BlogTemplates as |project|}}
-    <div class="row mb-2">
-      <div class="col-md-8">
-        <h4><a href="/project/{{project.id}}">{{project.title}}</a></h4>
-        <h4><a href="/project/{{project.id}}">{{project.content}}</a></h4>
-      </div>
-      <div class="col-md-4">
-        <button id="deleteBtn" data-id="{{project.id}}">DELETE</button>
+      <div class="blogContainer">
+        <h4 class="title"><a  href="/project/{{project.id}}">{{project.title}}</a></h4>
+        <h4 class="content"><a  href="/project/{{project.id}}">{{project.content}}</a></h4>
+        <button class="deleteBtn" data-id="{{project.id}}">DELETE</button>
       </div>
     </div>
     {{/each}}
