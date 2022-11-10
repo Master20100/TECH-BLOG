@@ -28,8 +28,8 @@ document.querySelector("#saveBtn").addEventListener("click", async (e) => {
     }
   }
 });
-if(document.querySelector("#deleteBtn")){
-document.querySelector("#deleteBtn").addEventListener("click",async(e)=>{
+if(document.querySelector(".deleteBtn")){
+document.querySelector(".deleteBtn").addEventListener("click",async(e)=>{
   if (e.target.hasAttribute('data-id')) {
     const id = e.target.getAttribute('data-id');
 

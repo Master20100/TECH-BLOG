@@ -13,7 +13,9 @@ loginButton.addEventListener('click',async(e)=>{
   }
 )
     if (response.ok) {
-      alert('logged in.');
+      document.querySelector("#loginPageBtn").style.display = "none";
+      document.querySelector("#registerPageBtn").style.display = "none";
+      // alert('logged in.');
       document.location.replace('/profile');
     } else {
       alert('Failed to log in.');
