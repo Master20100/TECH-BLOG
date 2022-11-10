@@ -1,7 +1,11 @@
 const loginPageBtn = document.querySelector("#loginPageBtn");
 const registerPageBtn = document.querySelector("#registerPageBtn");
+const homeBtn = document.querySelector("#homeBtn");
+
 document.querySelector("#loginPageBtn").style.display = "inline";
 document.querySelector("#registerPageBtn").style.display = "inline";
+
+
 loginPageBtn.addEventListener("click",async(e)=>{
   await fetch('login');
   document.location.replace('/login');
@@ -14,3 +18,9 @@ registerPageBtn.addEventListener("click",async(e)=>{
   document.location.replace('/register');
 }
 );
+
+// homeBtn.addEventListener("Click",async()=>{
+//   alert("aaaa");
+//   // document.location.replace("/");
+// });
+

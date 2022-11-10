@@ -182,6 +182,9 @@ app.post('/logout', (req, res) => {
   }
 });
 
+app.get("/home", (req, res) => {
+  res.render("home", { layout: "index" });
+});
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
