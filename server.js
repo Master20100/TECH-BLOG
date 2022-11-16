@@ -34,12 +34,18 @@ const sess = {
 
 app.use(session(sess));
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   //Serves the body of the page aka "main.handlebars" to the container //aka "index.handlebars"
-  res.render("main", { layout: "index" });
+  const blogsData = await BlogTemplate.findAll({
+    attributes: ["title","content"],
+    include: [{ model: User, attributes:["username"] }],
+  });
+  const blogs = blogsData.map((blog) => blog.get({ plain: true }));
+  console.log(...blogs);
+  res.render("main", { ...blogs,layout: "index" });
+  // console.log("...users");
+  // console.log(...users);
 });
-
-
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -119,14 +125,8 @@ app.get("/profile", withAuth, async (req, res) => {
     });
 
     const user = userData.get({ plain: true });
-  
-    // res.render('profile', {
-    //   ...user,
-    //   logged_in: true
-    // });
 
     res.render("profile", { ...user, layout: "index" });
-
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -151,7 +151,7 @@ app.post("/projects", withAuth, async (req, res) => {
   }
 });
 
-app.delete('/profile/:id', async (req, res) => {
+app.delete("/profile/:id", async (req, res) => {
   try {
     const blogContent = await BlogTemplate.destroy({
       where: {
@@ -160,7 +160,7 @@ app.delete('/profile/:id', async (req, res) => {
       },
     });
     if (!BlogTemplate) {
-      res.status(404).json({ message: 'No project found with this id!' });
+      res.status(404).json({ message: "No project found with this id!" });
       return;
     }
 
@@ -172,7 +172,7 @@ app.delete('/profile/:id', async (req, res) => {
 });
 
 
-app.post('/logout', (req, res) => {
+app.post("/logout", (req, res) => {
   if (req.session.logged_in) {
     req.session.destroy(() => {
       res.status(204).end();
