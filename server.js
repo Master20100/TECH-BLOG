@@ -42,8 +42,7 @@ app.get("/", async (req, res) => {
   });
   const blogs = blogsData.map((blog) => blog.get({ plain: true }));
   console.log("this is the blogs data");
-  console.log("blogs");
-  res.render("main", { ...blogs, layout: "index" });
+  res.render("main", { blogs, layout: "index" });
   // res.render("login", { layout: "index" });
 
 
@@ -127,7 +126,7 @@ app.get("/profile", withAuth, async (req, res) => {
     });
 
     const user = userData.get({ plain: true });
-console.log(user);
+//res.render has to have key value pairs
     res.render("profile", { ...user, layout: "index" });
   } catch (err) {
     console.log(err);
@@ -187,6 +186,32 @@ app.post("/logout", (req, res) => {
 app.get("/home", (req, res) => {
   res.render("home", { layout: "index" });
 });
+
+
+app.get("/project/:id", async (req, res) => {
+  try {
+    const blogData = await BlogTemplate.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    const blog = blogData.get({ plain: true });
+
+    res.render("blogUnit", {
+      ...blog,
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));

@@ -20,7 +20,6 @@ registerPageBtn.addEventListener("click",async(e)=>{
 
 homeBtn.addEventListener("click",async()=>{
 await fetch("/");
-console.log("hello");
 document.location.replace('/');
   // document.location.replace("/");
 });

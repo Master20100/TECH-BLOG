@@ -1,18 +1,13 @@
 <div> 
     {{{body}}}
 
-  {{#each blogs}}
-    <li>{{this}}</li>
-  {{/each}}
-
 
 {{#if blogs.length}}
     <h3>Current Blog Templates:</h3>
-    {{#each BlogTemplates as |blog|}}
+    {{#each blogs as |blog|}}
       <div class="blogContainer">
         <h4 class="title"><a  href="/project/{{project.id}}">{{blog.title}}</a></h4>
         <h4 class="content"><a  href="/project/{{project.id}}">{{blog.content}}</a></h4>
-        <button class="deleteBtn" data-id="{{project.id}}">DELETE</button>
       </div>
     </div>
     {{/each}}

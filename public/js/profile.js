@@ -47,7 +47,6 @@ document.querySelector(".deleteBtn").addEventListener("click",async(e)=>{
 })
 }
 document.querySelector("#logout").addEventListener("click",async()=>{
-  console.log("aaaaa");
 const response = await fetch("/logout");
 alert("You have been logged out");
 document.location.replace("/");
