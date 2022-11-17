@@ -41,10 +41,12 @@ app.get("/", async (req, res) => {
     include: [{ model: User, attributes:["username"] }],
   });
   const blogs = blogsData.map((blog) => blog.get({ plain: true }));
-  console.log(...blogs);
-  res.render("main", { ...blogs,layout: "index" });
-  // console.log("...users");
-  // console.log(...users);
+  console.log("this is the blogs data");
+  console.log("blogs");
+  res.render("main", { ...blogs, layout: "index" });
+  // res.render("login", { layout: "index" });
+
+
 });
 const PORT = process.env.PORT || 3000;
 
@@ -125,7 +127,7 @@ app.get("/profile", withAuth, async (req, res) => {
     });
 
     const user = userData.get({ plain: true });
-
+console.log(user);
     res.render("profile", { ...user, layout: "index" });
   } catch (err) {
     console.log(err);
