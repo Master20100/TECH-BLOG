@@ -37,11 +37,13 @@ app.use(session(sess));
 app.get("/", async (req, res) => {
   //Serves the body of the page aka "main.handlebars" to the container //aka "index.handlebars"
   const blogsData = await BlogTemplate.findAll({
-    attributes: ["title","content"],
+    //will get all attributes of the blog except the password
+    attributes: { exclude: ["password"] },
     include: [{ model: User, attributes:["username"] }],
   });
   const blogs = blogsData.map((blog) => blog.get({ plain: true }));
   console.log("this is the blogs data");
+  console.log(blogs);
   res.render("main", { blogs, layout: "index" });
   // res.render("login", { layout: "index" });
 
@@ -138,6 +140,13 @@ app.get("/createPost", (req, res) => {
   res.render("blogUnit", { layout: "index" });
 });
 
+
+app.get("/project", (req, res) => {
+  
+  console.log("project worked");
+  res.render("blogUnit", { layout: "index" });
+});
+
 app.post("/projects", withAuth, async (req, res) => {
   try {
     const blogContent = await BlogTemplate.create({
@@ -192,9 +201,29 @@ app.get("/project/:id", async (req, res) => {
 });
 
 
+app.delete("/profile/:id", async (req, res) => {
+  try {
+    const blogContent = await BlogTemplate.destroy({
+      where: {
+        id: req.params.id,
+        user_id: req.session.user_id,
+      },
+    });
+    if (!BlogTemplate) {
+      res.status(404).json({ message: "No project found with this id!" });
+      return;
+    }
+
+    res.status(200).json(blogContent);
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+});
+
+
 
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
 });
-

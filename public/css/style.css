@@ -102,3 +102,7 @@ align-content: center;
     width: 30%;
     color: black;
 }
+
+.comment, .commentSubmitBtn{
+display: none;
+}

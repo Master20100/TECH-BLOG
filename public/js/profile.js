@@ -52,3 +52,6 @@ alert("You have been logged out");
 document.location.replace("/");
 
 })
+
+document.querySelector(".updateBtn").addEventListener("click",()=>
+document.location.replace("/project"))

@@ -3,11 +3,15 @@
 
 
 {{#if blogs.length}}
-    <h3>Current Blog Templates:</h3>
+    <h3>Current Blog Templates::</h3>
     {{#each blogs as |blog|}}
       <div class="blogContainer">
-        <h4 class="title"><a  href="/project/{{project.id}}">{{blog.title}}</a></h4>
-        <h4 class="content"><a  href="/project/{{project.id}}">{{blog.content}}</a></h4>
+        <h4 class="title">{{blog.title}}</a></h4>
+        <h4 class="content">{{blog.content}}</a></h4>
+        <h4 class="content">posted by {{blog.User.username}} on {{blog.createdAt}}</a></h4>
+        <button class="addCommentBtn" >Add comment</button>
+        <input class="comment">
+        <button class="commentSubmitBtn"> Submit</button>
       </div>
     </div>
     {{/each}}
@@ -16,3 +20,4 @@
 
 
     </div>   
+<script src="/js/main.js"></script>
