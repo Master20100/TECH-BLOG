@@ -8,8 +8,13 @@ document.querySelectorAll(".addCommentBtn").forEach(button=>{
 
 document.querySelectorAll(".commentSubmitBtn").forEach(button=>{
     button.addEventListener("click",(e)=>{
-console.log(e.currentTarget.parentNode.querySelector(".comment").value);
-
+    console.log(e.currentTarget.parentNode.querySelector(".comment").value);
+     if(e.currentTarget.parentNode.querySelector(".comment").value){
+    const para = document.createElement("p");
+    para.innerText = e.currentTarget.parentNode.querySelector(".comment").value;
+    e.currentTarget.parentNode.appendChild(para);
+     
+     }
     })
 })
 });
